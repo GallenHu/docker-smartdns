@@ -1,19 +1,24 @@
-FROM alpine
+#
+# Dockerfile for smartdns
+#
 
-LABEL maintainer="Ghostry <ghostry.green@gmail.com>"
+FROM alpine:3.8
 
-RUN wget https://github.com/pymumu/smartdns/releases/download/Release28/smartdns.1.2019.12.15-1028.x86_64-linux-all.tar.gz \
-  && tar zxvf smartdns.*.tar.gz \
-  && mv smartdns/src/smartdns /bin/smartdns \
-  && rm -rf smartdns*
+ENV DL_URL https://github.com/pymumu/smartdns/releases/download/Release30/smartdns.1.2020.02.25-2212.x86_64-linux-all.tar.gz
 
-ADD start.sh /start.sh
-ADD config.conf /config.conf
+RUN set -ex \
+    && wget $DL_URL \
+    && tar zxvf smartdns.*.tar.gz \
+    && mv smartdns/src/smartdns /bin/smartdns \
+    && rm -rf smartdns*
+
+COPY config.conf /config.conf
+COPY docker-entrypoint.sh /entrypoint.sh
 
 WORKDIR /
 
 VOLUME ["/smartdns"]
 
-EXPOSE 53
+EXPOSE 53/udp
 
-CMD ["/start.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
