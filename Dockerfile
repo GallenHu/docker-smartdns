@@ -12,7 +12,7 @@ RUN set -ex \
     && mv smartdns/src/smartdns /bin/smartdns \
     && rm -rf smartdns*
 
-COPY config.conf /config.conf
+COPY smartdns.conf /smartdns.conf
 COPY docker-entrypoint.sh /entrypoint.sh
 
 WORKDIR /
