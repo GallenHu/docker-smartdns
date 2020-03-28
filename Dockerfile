@@ -2,7 +2,7 @@
 # Dockerfile for smartdns
 #
 
-FROM alpine:3.8
+FROM alpine:3.11
 
 ENV DL_URL https://github.com/pymumu/smartdns/releases/download/Release30/smartdns.1.2020.02.25-2212.x86_64-linux-all.tar.gz
 
