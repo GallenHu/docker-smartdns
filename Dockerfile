@@ -4,20 +4,21 @@
 
 FROM alpine:latest
 
-ENV DL_URL https://github.com/pymumu/smartdns/releases/download/Release30/smartdns.1.2020.02.25-2212.x86_64-linux-all.tar.gz
+ARG DL_URL="https://github.com/pymumu/smartdns/releases/download/Release31/smartdns.1.2020.05.04-0005.x86_64-linux-all.tar.gz"
 
 RUN set -ex \
+    && apk --update add --no-cache \
+       ca-certificates \
     && wget $DL_URL \
     && tar zxvf smartdns.*.tar.gz \
-    && mv smartdns/src/smartdns /bin/smartdns \
-    && rm -rf smartdns*
+    && mv smartdns/usr/sbin/smartdns /bin/smartdns \
+    && mv smartdns/etc/smartdns/smartdns.conf /etc/smartdns.conf \
+    && rm -rf smartdns* \
+    && rm -rf /var/cache/apk
 
-COPY smartdns.conf /smartdns.conf
 COPY docker-entrypoint.sh /entrypoint.sh
 
-WORKDIR /
-
-VOLUME ["/smartdns"]
+WORKDIR /smartdns
 
 EXPOSE 53/udp
 
